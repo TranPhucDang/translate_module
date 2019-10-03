@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- tree view of Product and Amount -->
+        <record id="view_top_selling_product_invoices_tree" model="ir.ui.view">
+            <field name="name">products.vendorbills.tree</field>
+            <field name="model">products.vendorbills</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" >
+                    <field name="product"/>
+                    <field name="amount"/>
+                </tree>
+            </field>
+        </record>
+
+    <record id="open_view_top_selling_products_invoices_details_tree" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">products.vendorbills</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_top_selling_product_invoices_tree" />
+    </record>
+
+</odoo>

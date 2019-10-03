@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!-- replace old table for deliver slip report with category wise product table -->
+	<template id="abs_delivery_slip_by_product_category.report_delivery_slip" inherit_id="stock.report_delivery_document">
+	    <xpath expr="//table[@class='table table-condensed mt48'][2]" position="replace">
+              <table class="table table-condensed mt48" t-if="o.move_line_ids">
+                <t t-set="has_serial_number" t-value="o.move_line_ids.mapped('lot_id')" groups="stock.group_production_lot"/>
+                   <thead>
+                     <tr>
+                        <th><strong>Product</strong></th>
+                        <th name="lot_serial" t-if="has_serial_number">
+                              Lot/Serial Number
+                        </th>
+                        <th class="text-center"><strong>Ordered Quantity</strong></th>
+                        <th t-if="any([move_line.state == 'done' for move_line in o.move_line_ids])" class="text-right">
+                              <strong>Delivered Quantity</strong>
+                        </th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                      <t t-set="product_category" t-value="[]"/>
+                      <t t-foreach="o.move_line_ids.sorted(key=lambda m: m.product_id.id)" t-as="move_line">
+                         <t t-set="product_category" t-value="product_category+[move_line.product_id.categ_id]"/>
+                      </t>
+
+                      <t t-foreach="set(product_category)" t-as="category">
+                        <t t-foreach="o.move_line_ids.sorted(key=lambda m: m.product_id.id)" t-as="move_line">
+                          <t t-if="category.id==move_line.product_id.categ_id.id">
+                            <tr>
+                              <td>
+                                <span t-field="move_line.product_id"/>
+                                <p t-if="o.picking_type_code == 'outgoing'">
+                                   <span t-field="move_line.product_id.sudo().description_pickingout"/>
+                                </p>
+                                <p t-if="o.picking_type_code == 'incoming'">
+                                   <span t-field="move_line.product_id.sudo().description_pickingin"/>
+                                </p>
+                              </td>
+                                <t t-if="has_serial_number">
+                                  <td>
+                                    <table width="100%">
+                                      <tr>
+                                        <td>
+                                          <span t-field="move_line.lot_id"/>
+                                            <t t-if="not move_line.lot_id">
+                                              <span t-field="move_line.lot_name"/>
+                                            </t>
+                                        </td>
+                                        <td name="lot_qty">
+                                          <t t-if="move_line.product_qty"> 
+                                            <span t-field="move_line.product_qty"/>
+                                          </t>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </t>
+                                <td class="text-center">
+                                  <span t-field="move_line.ordered_qty"/>
+                                  <span t-field="move_line.product_uom_id"/>
+                                </td>
+                                <td class="text-right" t-if="move_line.state == 'done'">
+                                  <t t-if="move_line.ordered_qty != move_line.qty_done">
+                                    <t t-set="backorder" t-value="True"/>
+                                  </t>
+                                    <span t-field="move_line.qty_done"/>
+                                    <span t-field="move_line.product_uom_id"/>
+                                </td>
+                     </tr>
+                   </t>
+                 </t>
+               </t>
+             </tbody>
+           </table>
+         </xpath>
+       </template>
+     </data>	
+</odoo>	
+

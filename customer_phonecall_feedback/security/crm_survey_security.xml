@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <record id="group_enable_customer_feedback_form" model="res.groups">
+        <field name="name">Collect feedback through Scheduled Call</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+        <field name="comment">Collect feedback through Scheduled Call</field>
+    </record>
+</data>
+</openerp>
