@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+	<!--Extending existing tree view of Phonecall-->
+        <record id="crm_phonecall_feedback_form_inherit" model="ir.ui.view">
+            <field name="name">crm.phonecall.feedback.feedback.inherit</field>
+            <field name="model">crm.phonecall</field>
+            <field name="inherit_id" ref="crm.crm_case_phone_form_view"/>
+            <field name="arch" type="xml">
+              <xpath expr="//button[@name='action_make_meeting']" position="after">
+                <button class="oe_inline oe_stat_button" name="action_test_survey" type="object" icon="fa-pencil-square-o" groups="customer_phonecall_feedback.group_enable_customer_feedback_form">
+                    <div>Get<br/>Feedback</div>
+                </button>
+              </xpath>
+              <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="survey_id" groups="customer_phonecall_feedback.group_enable_customer_feedback_form"/>
+              </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

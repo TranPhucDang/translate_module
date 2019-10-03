@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- create a new button name as 'Create RFQ' in which open a wizard and get field supplier and their order lines for purchase order-->
+    <record id="view_employee_form" model="ir.ui.view">
+        <field name="name">hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+        <!-- create a button for 'Create RFQ' -->
+        <xpath expr="/form/*" position="before">
+            <header>
+                    <button name = "%(open_create_rfq_wizard_action)d" type = "action" string = "Create RFQ" class="btn-primary"/>
+            </header>
+        </xpath>
+
+        <!-- create a oe-button for display purchase order which is created by that employee and also display count of total purchase order.
+             if purchase order is in 'draft' state then it will display-->
+             
+        <xpath expr="//div[@name='button_box']" position = 'inside'>
+            <button class="oe_stat_button" type="object" icon="fa-shopping-cart" name = "create_RFQ_lines">
+                <field name="rfq_total" widget="statinfo"/>
+            </button>
+        </xpath>
+
+        </field>
+    </record>
+</odoo>
+

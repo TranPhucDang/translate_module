@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<odoo>
+    <!-- This xml file genrate report of request of quotation and display product category wise. -->
+    <template id="report_rfq_sort_product_category_wise"
+		  inherit_id ="purchase.report_purchasequotation_document">
+	<xpath expr="//tbody" position="replace">	   
+	    <t t-set="product_category" t-value="[]"/>
+	    <t t-foreach="o.order_line" t-as="l">
+		<t t-set="product_category" t-value="product_category+[l.product_id.categ_id]"/>
+	    </t>
+	    <t t-foreach="set(product_category)" t-as="category">
+		<t t-foreach="o.order_line" t-as="l">
+		    <t t-if="category.id==l.product_id.categ_id.id">
+			<tr>
+			    <td>
+                            	<span t-field="l.name"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="l.date_planned"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="l.product_qty"/>
+                                <span t-field="l.product_uom" groups="product.group_uom"/>
+                            </td>
+			</tr>
+		    </t>
+		</t>
+	    </t>
+	</xpath>
+    </template>
+</odoo>
